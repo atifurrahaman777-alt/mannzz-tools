@@ -36,6 +36,10 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    if (data.downloadUrl && data.downloadUrl.startsWith('/')) {
+      data.downloadUrl = new URL(data.downloadUrl, base).toString();
+    }
+
     return res.status(200).json(data);
   } catch {
     return res.status(502).json({
