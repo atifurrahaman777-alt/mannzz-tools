@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080811">
+<meta name="description" content="Mann'zz Tools — kumpulan tools dari Mann'zz">
+<title>Mann'zz Tools</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:30px 0}
+@media(max-width:760px){.tools-grid{grid-template-columns:1fr}}
+.tool-card{display:flex;flex-direction:column;gap:10px}
+.tool-icon{font-size:2rem}
+.tool-card h3{margin:0;font-size:1.1rem}
+.tool-card p{margin:0;color:var(--muted);text-shadow:none;font-size:.85rem;flex-grow:1}
+.tool-card .btn{margin-top:6px;align-self:flex-start}
+.tool-card.soon{opacity:.6;border-style:dashed}
+body.light-mode .tool-card p{color:#5a5468}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header>
+<div class="brand">⚡ Mann'zz <span class="accent">Tools</span></div>
+<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap">☀️</button>
+</header>
+
+<section class="hero">
+<div class="eyebrow">TOOLS HUB</div>
+<h1>Satu tempat,<br><span class="accent">banyak tools.</span></h1>
+<p class="sub">Kumpulan tools yang dibuat Mann'zz — dari verifikasi email sampai downloader media.</p>
+</section>
+
+<section class="tools-grid">
+<article class="card tool-card">
+<div class="tool-icon">📨</div>
+<h3>AMPREM</h3>
+<p>Panel verifikasi email lewat magic link, plus statistik & status sistem.</p>
+<a class="btn" href="amprem.html">Buka AMPREM →</a>
+</article>
+
+<article class="card tool-card">
+<div class="tool-icon">⬇️</div>
+<h3>Downloader</h3>
+<p>Download video/foto dari YouTube, TikTok, Instagram, Pinterest, dan lainnya.</p>
+<a class="btn" href="downloader.html">Buka Downloader →</a>
+</article>
+
+<article class="card tool-card soon">
+<div class="tool-icon">🧩</div>
+<h3>Segera Hadir</h3>
+<p>Tool berikutnya nyusul di sini.</p>
+</article>
+</section>
+
+</main>
+<footer>© Mann'zz Tools</footer>
+<script src="app.js"></script>
+</body>
+</html>
