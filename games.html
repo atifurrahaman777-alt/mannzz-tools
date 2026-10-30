@@ -515,11 +515,12 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
     spinBtn.disabled = true;
 
     const n = options.length;
-    const extraTurns = 6 + Math.random() * 3;
     const targetIndex = Math.floor(Math.random() * n);
     const sliceAngle = (Math.PI * 2) / n;
-    const targetRotation = rotation + extraTurns * Math.PI * 2
-      + (Math.PI * 2 - (targetIndex * sliceAngle + sliceAngle / 2)) - (rotation % (Math.PI * 2));
+    const centerAngle = targetIndex * sliceAngle + sliceAngle / 2;
+    const base = Math.ceil(rotation / (Math.PI * 2)) * Math.PI * 2;
+    const turns = 6 + Math.floor(Math.random() * 3);
+    const targetRotation = base + turns * Math.PI * 2 + (1.5 * Math.PI - centerAngle);
 
     const duration = 4000;
     const startRotation = rotation;
