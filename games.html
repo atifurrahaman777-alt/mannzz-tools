@@ -64,6 +64,13 @@ body.light-mode .typing-text span.wrong{color:#c0392b}
 .ttt-cell,.ttt-cell:disabled{color:#fff;opacity:1;-webkit-text-fill-color:currentColor}
 .wam-hole{border-color:#666;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 .wam-hole.up{color:#111}
+
+.ocean-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:640px;margin:0 auto 18px}
+.ocean-tab{padding:10px 16px;border:2px solid #000;border-radius:999px;background:var(--card);color:inherit;font:inherit;font-size:.85rem;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:3px 3px 0 var(--purple);transition:transform .12s ease,box-shadow .12s ease;touch-action:manipulation}
+.ocean-tab:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--purple)}
+.ocean-tab.active{background:var(--gold);color:#1a1200}
+body.light-mode .ocean-tab{background:#fff;color:#111}
+body.light-mode .ocean-tab.active{background:var(--gold);color:#1a1200}
 </style>
 </head>
 <body>
@@ -340,35 +347,59 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
 (() => {
   const area = document.getElementById('rt-area');
   const stats = document.getElementById('rt-stats');
+  const decoys = [
+    { name: 'MERAH',  bg: '#c0392b' },
+    { name: 'BIRU',   bg: '#2f6fd6' },
+    { name: 'KUNING', bg: '#c99a06' },
+    { name: 'UNGU',   bg: '#8e44ad' },
+    { name: 'ORANYE', bg: '#d9702a' },
+    { name: 'PINK',   bg: '#d6336c' }
+  ];
   let state = 'idle';
-  let timeoutId = null;
-  let startTime = 0;
+  let decoyTimer = null, goTimer = null;
+  let startTime = 0, lastIdx = -1;
   let results = [];
+
+  function resetStyle() { area.style.background = ''; area.style.color = ''; }
+  function clearTimers() { clearTimeout(decoyTimer); clearTimeout(goTimer); }
+
+  function nextDecoy() {
+    let i;
+    do { i = Math.floor(Math.random() * decoys.length); } while (i === lastIdx);
+    lastIdx = i;
+    area.className = 'rt-area';
+    area.style.background = decoys[i].bg;
+    area.style.color = '#fff';
+    area.textContent = decoys[i].name + ' - tunggu HIJAU...';
+    decoyTimer = setTimeout(nextDecoy, 500 + Math.random() * 500);
+  }
 
   area.addEventListener('click', () => {
     if (state === 'idle') {
       state = 'waiting';
-      area.className = 'rt-area wait';
-      area.textContent = 'Tunggu warna hijau...';
-      const delay = 1000 + Math.random() * 3000;
-      timeoutId = setTimeout(() => {
+      nextDecoy();
+      goTimer = setTimeout(() => {
+        clearTimeout(decoyTimer);
         state = 'go';
-        startTime = performance.now();
+        resetStyle();
         area.className = 'rt-area go';
-        area.textContent = 'KLIK SEKARANG!';
-      }, delay);
+        area.textContent = 'HIJAU! KLIK SEKARANG!';
+        startTime = performance.now();
+      }, 2000 + Math.random() * 3500);
     } else if (state === 'waiting') {
-      clearTimeout(timeoutId);
+      clearTimers();
       state = 'idle';
+      resetStyle();
       area.className = 'rt-area';
       area.textContent = 'Kecepetan! Klik buat coba lagi.';
     } else if (state === 'go') {
       const reaction = Math.round(performance.now() - startTime);
       results.push(reaction);
-      const avg = Math.round(results.reduce((a,b) => a+b, 0) / results.length);
+      const avg = Math.round(results.reduce((a, b) => a + b, 0) / results.length);
       const best = Math.min(...results);
       stats.textContent = `Terakhir: ${reaction}ms · Terbaik: ${best}ms · Rata-rata: ${avg}ms (${results.length}x)`;
       state = 'idle';
+      resetStyle();
       area.className = 'rt-area';
       area.textContent = 'Klik buat coba lagi';
     }
@@ -382,8 +413,34 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
     'Latihan rutin akan membuat kecepatan mengetik semakin baik.',
     'Teknologi terus berkembang dan mengubah cara kita bekerja.',
     'Mann zz tools dibuat untuk membantu pekerjaan sehari hari.',
-    'Fokus dan konsistensi adalah kunci untuk mencapai hasil maksimal.'
+    'Fokus dan konsistensi adalah kunci untuk mencapai hasil maksimal.',
+    'Setiap pagi matahari terbit dari timur dan membawa harapan baru.',
+    'Belajar pemrograman butuh kesabaran, tapi hasilnya sangat memuaskan.',
+    'Kopi hangat dan musik santai membuat sore hari terasa lebih tenang.',
+    'Jangan takut gagal, karena dari kesalahan kita belajar banyak hal.',
+    'Kecepatan mengetik sepuluh jari sangat berguna untuk pekerjaan kantor.',
+    'Hujan deras turun sejak siang dan jalanan menjadi sedikit tergenang.',
+    'Indonesia memiliki ribuan pulau dengan budaya dan bahasa yang beragam.',
+    'Membaca buku setiap hari dapat memperluas wawasan dan melatih imajinasi.',
+    'Teman yang baik selalu ada saat kita senang maupun saat kita susah.',
+    'Bot WhatsApp bisa membantu mengunduh video, membuat stiker, dan banyak lagi.',
+    'Keamanan akun itu penting, jadi gunakan kata sandi yang kuat dan unik.',
+    'Pasar malam ramai pengunjung yang mencari jajanan khas dan mainan murah.',
+    'Kerja keras hari ini adalah investasi untuk kesuksesan di masa depan.',
+    'Burung berkicau riang di atas pohon sementara angin berhembus pelan.',
+    'Pelan pelan asal terus berjalan, lama lama sampai juga ke tujuan.',
+    'Sebelum mengirim pesan, periksa dulu apakah tulisanmu sudah benar.',
+    'Layar ponsel yang terlalu terang bisa membuat mata cepat lelah.',
+    'Malam ini bulan bersinar terang dan bintang bertebaran di langit.',
+    'Nasi goreng buatan ibu selalu terasa paling enak dibanding yang lain.',
+    'Komputer cepat tidak ada gunanya kalau penggunanya malas belajar hal baru.',
+    'Ketik dengan tenang dan teliti, karena akurasi sama pentingnya dengan kecepatan.',
+    'Internet yang stabil membuat pekerjaan online berjalan lancar tanpa gangguan.',
+    'Liburan akhir pekan terasa singkat, tapi cukup untuk mengisi ulang semangat.',
+    'Programmer hebat bukan yang tidak pernah error, tapi yang tahu cara memperbaikinya.',
+    'Semangat belajar tidak mengenal usia, siapa pun boleh memulai kapan saja.'
   ];
+  let lastIdx = -1;
   const textEl = document.getElementById('typing-text');
   const input = document.getElementById('typing-input');
   const wpmEl = document.getElementById('typing-wpm');
@@ -397,7 +454,10 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
   let finished = false;
 
   function loadSentence() {
-    target = sentences[Math.floor(Math.random() * sentences.length)];
+    let idx;
+    do { idx = Math.floor(Math.random() * sentences.length); } while (idx === lastIdx);
+    lastIdx = idx;
+    target = sentences[idx];
     renderTarget('');
     input.value = '';
     input.disabled = false;
