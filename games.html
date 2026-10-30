@@ -60,6 +60,10 @@ body.light-mode .wam-hole.up{background:#ffd700;color:#111}
 body.light-mode .typing-text span{color:#111}
 body.light-mode .typing-text span.correct{color:#1a7a3c}
 body.light-mode .typing-text span.wrong{color:#c0392b}
+
+.ttt-cell,.ttt-cell:disabled{color:#fff;opacity:1;-webkit-text-fill-color:currentColor}
+.wam-hole{border-color:#666;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.wam-hole.up{color:#111}
 </style>
 </head>
 <body>
@@ -285,7 +289,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
   for (let i = 0; i < 9; i++) {
     const h = document.createElement('div');
     h.className = 'wam-hole';
-    h.addEventListener('click', () => {
+    h.addEventListener('pointerdown', () => {
       if (h.classList.contains('up')) {
         score++;
         scoreEl.textContent = 'Score: ' + score;
